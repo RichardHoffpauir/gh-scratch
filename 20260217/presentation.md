@@ -6,15 +6,12 @@ February 2026
 
 ## Where Does the CHA Fit in Water Forward?
 
-The Climate and Hydrology Analysis (CHA) is the technical engine that translates global climate science into local water planning tools.
-
 **Climate Projections (GCMs)** → **CHA** → **WAM Inputs** → **Water Availability Model** → **Needs Assessment** → **Strategy Portfolio**
 
-- Global Climate Models (GCMs) project future temperature and precipitation
-- The CHA converts those projections into streamflow, evapotranspiration, and lake evaporation for the Colorado River Basin
-- These become inputs to the Water Availability Model (WAM), which simulates reservoir operations and water supply reliability
-- WAM results identify potential shortfalls across hundreds of climate scenarios
-- Shortfall analysis drives evaluation and selection of water management strategies
+- GCMs project future temperature and precipitation
+- CHA converts projections into streamflow, evapotranspiration, and lake evaporation for the Colorado River Basin (CRB)
+- The Water Availability Model (WAM) uses these inputs to simulate reservoir operations and water supply reliability across hundreds of climate scenarios
+- Results drive evaluation of water management strategies
 
 In WF24, this pipeline produced 126 hydrologic input sets evaluated across 666 modeling scenarios.
 
@@ -23,18 +20,18 @@ In WF24, this pipeline produced 126 hydrologic input sets evaluated across 666 m
 ## What is the Climate and Hydrology Analysis?
 
 ### Purpose
-Develop Colorado River Basin (CRB) Water Availability Model (WAM) hydrologic inputs representative of future climate change conditions.
+Develop CRB WAM hydrologic inputs representative of future climate change conditions.
 
 ### Goals
-- Generate climate-adjusted **streamflow** projections at 45 control points across the CRB
-- Generate climate-adjusted **evapotranspiration** and **lake evaporation** projections
-- Provide robust inputs for evaluating water supply reliability under multiple climate scenarios
+- Climate-adjusted **streamflow** projections at 45 control points
+- Climate-adjusted **evapotranspiration** and **lake evaporation** projections
+- Robust inputs for evaluating water supply reliability under multiple climate scenarios
 
 ### WAM Deliverables
 | File Type | Description |
 |---|---|
 | **flo** | Streamflow at 43 surface water control points + 2 karst springs (Barton Springs, Dove Creek Springs) |
-| **eva** | Potential and actual evapotranspiration across the basin |
+| **eva** | Evapotranspiration across the basin |
 | **fad** | Flow accumulation and routing data |
 
 ---
@@ -42,18 +39,17 @@ Develop Colorado River Basin (CRB) Water Availability Model (WAM) hydrologic inp
 ## Why Are We Updating the CHA for WF29?
 
 ### Better Data
-- **Higher resolution GCMs**: LOCA2 dataset provides 6 km resolution vs. ~100-110 km in WF24
-- **More GCMs**: 27 models available in LOCA2 vs. 5 in WF24
-- **Multiple ensemble members** per GCM to assess projection uncertainty
+- **Higher resolution**: LOCA2 at 6 km vs. ~100-110 km in WF24
+- **More GCMs**: 27 in LOCA2 vs. 5 in WF24
+- **Multiple ensemble members** per GCM for uncertainty assessment
 
 ### Better Models
-- Transitioning from statistical streamflow models to a **process-based** approach
-- WF18: Linear regression | WF24: Neural network | **WF29: GR4J conceptual water balance model**
-- Process-based models have physical structure that may generalize better to future conditions outside the historical range
+- Transitioning from statistical to **process-based** streamflow modeling
+- WF18: Linear regression | WF24: Neural network | **WF29: GR4J water balance model**
 
 ### Addressing Open Questions
 - WF24 identified several topics for future investigation
-- WF29 is specifically designed to address these topics with improved data and methods
+- WF29 addresses these with improved data and methods
 
 ---
 
@@ -61,35 +57,32 @@ Develop Colorado River Basin (CRB) Water Availability Model (WAM) hydrologic inp
 
 | Aspect | WF18 | WF24 | WF29 |
 |---|---|---|---|
-| **Downscaling** | — | Re-gridded to 1° (~100-110 km) | LOCA2 at 6 km |
-| **Bias correction** | — | None (simple re-gridding) | LOCA2 localized constructed analogs |
-| **Number of GCMs** | — | 5 (selected from 35) | 27 available (8 overlap with WF24) |
-| **SSPs** | — | 3 (1-2.6, 2-4.5, 5-8.5) | 3 (2-4.5, 3-7.0, 5-8.5) |
-| **Ensemble members** | — | 1 per GCM | Multiple per GCM |
+| **Downscaling** | Statistical | Re-gridded to 1° (~100-110 km) | LOCA2 at 6 km |
+| **Bias correction** | — | Mean and variance | LOCA2 localized constructed analogs |
+| **Number of GCMs** | 20 | 5 (selected from 35) | 27 available (8 overlap with WF24) |
+| **SSPs** | 2 (RCP 4.5 and 8.5) | 3 (1-2.6, 2-4.5, 5-8.5) | 3 (2-4.5, 3-7.0, 5-8.5) |
+| **Ensemble members** | 1 per GCM | 1 per GCM | Multiple per GCM |
 | **Streamflow model** | Linear regression | Neural network | GR4J (process-based) |
-| **ETo model** | — | Hargreaves-Samani (unconstrained) | Oudin12b (sensitivity-controlled) |
-| **Historical temp/precip** | — | PRISM | Livneh (LOCA2 training data) |
-| **Historical streamflow** | — | TCEQ WAM for CRB | TCEQ WAM for CRB |
+| **ETo model** | not used | Hargreaves-Samani (unconstrained) | Oudin12b (sensitivity-controlled) |
+| **Historical temp/precip** | weather stations | PRISM | Livneh (LOCA2 training data) |
+| **Historical streamflow** | TCEQ WAM for CRB | TCEQ WAM for CRB | TCEQ WAM for CRB |
 
 ---
 
 ## Investigation Topics: GCM Data
 
-These topics were identified during WF24 for future investigation. WF29 addresses all three.
+Topics identified during WF24 for future investigation.
 
 ### A1. Downscaled Spatial Resolution
-- WF24 re-gridded raw CMIP6 output to 1° quadrangles (~100-110 km)
-- WF29 uses LOCA2 at 6 km — an 18x improvement in linear resolution
+- WF24: 1° quadrangles (~100-110 km). WF29: LOCA2 at 6 km (18x finer).
 - Does higher resolution materially change hydrologic projections?
 
 ### A2. Sophistication of Bias Correction
-- WF24 applied no bias correction beyond re-gridding
-- LOCA2 uses localized constructed analogs to bias-correct GCM outputs against the Livneh observational dataset
-- How does bias correction affect projection quality and reliability?
+- WF24: simple re-gridding, no bias correction. WF29: LOCA2 localized constructed analogs against Livneh observations.
+- How does bias correction affect projection quality?
 
 ### A3. Signal-to-Noise Ratio (Ensemble Members)
-- WF24 used only the first ensemble member per GCM
-- WF29 uses multiple members (e.g., ACCESS-CM2 and KACE-1-0-G each have 3 members)
+- WF24: 1 ensemble member per GCM. WF29: multiple members available.
 - Is inter-member variability significant relative to inter-model spread?
 
 ---
@@ -97,49 +90,46 @@ These topics were identified during WF24 for future investigation. WF29 addresse
 ## Investigation Topics: Modeling and Projection Stability
 
 ### B. Data-Driven vs. Process-Based Streamflow Modeling
-- WF24 used a neural network trained on historical weather-to-flow relationships
-- WF29 uses GR4J, a 4-parameter conceptual rainfall-runoff model with explicit water balance accounting
-- GR4J's parsimony (only 4 parameters) makes it amenable to exhaustive parameter sampling and robustness screening — an approach that is not feasible with high-dimensional statistical models
+- WF24: neural network (statistical, many parameters)
+- WF29: GR4J, a 4-parameter conceptual rainfall-runoff model
+- GR4J's parsimony enables exhaustive parameter sampling and robustness screening — not feasible with high-dimensional statistical models
 
 ### C. Projection Stability Under Non-Stationary Conditions
-Both ETo and streamflow models must produce plausible results when driven by future climate inputs that exceed the historical calibration range. Two key design decisions address this:
+Models must produce plausible results when driven by climate inputs outside the historical calibration range. Two design decisions address this:
 
-- **Oudin12b ETo model**: Sensitivity constraint limits ETo response to ~3%/C of warming. **Complete and ready for use.** (Details in later slides.)
-- **GR4J calibration strategy**: Cross-regime screening explicitly tests parameter transferability across contrasting climate conditions. **Currently in progress.** (Details in the following two slides.)
+- **Oudin12b ETo**: Sensitivity constrained to ~3%/C. **Complete.** (Details in later slides.)
+- **GR4J calibration**: Cross-regime screening tests parameter transferability. **In progress.** (Next two slides.)
 
 ---
 
 ## The Extrapolation Challenge
 
-Calibrating a model on 20 years of observed history and then driving it with GCM projections through 2100 is fundamentally an **extrapolation problem**. Future temperatures, precipitation patterns, and drought sequences will exceed the range of conditions used during calibration.
+Calibrating on 20 years of history and projecting through 2100 is an **extrapolation problem**. Future conditions will exceed the calibration range.
 
-### The Problem
-- Standard calibration optimizes fit within the historical range
-- Parameters that perform well historically can fail under warmer, non-stationary regimes
-
-### The Goal
-- Move beyond "good historical fit" to explicitly test for **transferability** across contrasting climate conditions (Klemes, 1986)
-- GR4J's 4-parameter structure makes this feasible: we can exhaustively sample the parameter space and screen every candidate against multiple climate regimes
+### Problem and Goal
+- Standard calibration optimizes historical fit — but parameters can fail under non-stationary regimes
+- Goal: explicitly test **transferability** across contrasting climate conditions (Klemes, 1986)
+- GR4J's 4-parameter structure makes this feasible — we can exhaustively sample and screen the full parameter space
 
 ### Consistent Forcing Across Epochs
-- **Oudin PET** is used for both historical calibration and GCM projections — same physics in both periods
-- **LOCA2** inputs are pre-corrected against Livneh observations — no additional bias correction that would risk "double correction"
-- **Historical streamflow** target: TCEQ WAM naturalized flows (1999-2018)
+- **Oudin PET** used for both calibration and projection — same physics in both periods
+- **LOCA2** inputs pre-corrected against Livneh — no "double correction"
+- **Streamflow target**: TCEQ WAM naturalized flows (1999-2018)
 
 ---
 
 ## GR4J Calibration: Designing for Robustness
 
-The calibration strategy uses full-period calibration with cross-regime acceptance screening to identify parameter sets that transfer reliably to unseen conditions.
+Full-period calibration with cross-regime acceptance screening identifies parameter sets that transfer to unseen conditions.
 
-[Conceptual diagram: A horizontal workflow with 5 steps shown as connected arrows or boxes. Step 1: "Forcing Prep" — Oudin PET and LOCA2 quality assurance. Step 2: "Define Regimes" — Split the 1999-2018 calibration period into dry, wet, warm, and cool year groups using terciles, forming a 2x2 grid. Step 3: "LHS Sampling" — Generate 50,000 candidate parameter sets via Latin Hypercube Sampling within physical bounds. Step 4: "Cross-Regime Screening" — Filter: each candidate must achieve KGE >= 0.50 for both raw and log flows, and volume bias <= 15%, in ALL four regimes AND the full period. Step 5: "Projection" — Surviving behavioral parameter sets form an ensemble; each GCM projection is paired with the parameter set that best preserves ensemble flow signatures for that specific future.]
+[Conceptual diagram: A horizontal workflow with 5 connected steps. Step 1: "Forcing Prep" — Oudin PET and LOCA2 quality assurance. Step 2: "Define Regimes" — Split 1999-2018 into dry, wet, warm, and cool year groups using terciles (2x2 grid). Step 3: "LHS Sampling" — 50,000 candidate parameter sets via Latin Hypercube Sampling. Step 4: "Cross-Regime Screening" — Each candidate must achieve KGE >= 0.50 (raw and log flows) and volume bias <= 15% in ALL four regimes AND the full period. Step 5: "Projection" — Surviving behavioral sets form an ensemble; each GCM projection paired with the parameter set that best preserves ensemble flow signatures.]
 
 ### Key Design Principles
-- **Full-period calibration** (1999-2018): Maximizes data availability instead of arbitrary chronological splitting
-- **Multi-objective function**: Low flows (KGE of log Q, weight 0.8) + high flows (KGE of raw Q, weight 0.2) + volume balance constraint
-- **Ensemble, not single best**: Equifinality is acknowledged — multiple parameter sets can yield similar performance. We retain the full ensemble of behavioral sets that survive screening.
-- **Representative Member, not median**: Timestep-wise medians destroy flood peaks and drought durations. A Representative Member is selected via multi-signature matching (mean flow, extremes, variance).
-- **Status**: Methodology complete. Calibration implementation in progress for all 45 control points.
+- **Full-period calibration** (1999-2018) instead of arbitrary split-sample
+- **Multi-objective**: Low flows (KGE of log Q, weight 0.8) + high flows (KGE of raw Q, weight 0.2) + volume constraint
+- **Ensemble, not single best**: Retain all behavioral parameter sets that survive screening
+- **Representative Member, not median**: Selected via multi-signature matching (mean flow, extremes, variance) — timestep medians destroy flood peaks and drought durations
+- **Status**: Methodology complete. Calibration in progress for 45 control points.
 
 ---
 
@@ -148,17 +138,16 @@ The calibration strategy uses full-period calibration with cross-regime acceptan
 ### Phase 1 — Current Focus
 Generate WAM-ready hydrology files (flo, eva, fad) for the WF29 **Preliminary Needs Analysis (PNA)**.
 
-- Complete streamflow model calibration and projection (Tasks 04-05)
-- Conduct climate scenario assessment and GCM selection (Task 07)
-- Post-process projections: quantile mapping, stochastic drought sequences (Task 08)
+- Complete streamflow calibration and projection (Tasks 04-05)
+- Climate scenario assessment and GCM selection (Task 07)
+- Post-processing: quantile mapping, stochastic drought sequences (Task 08)
 - Deliver WAM input files (Task 09)
 
-### Phase 2 — After PNA Completion
+### Phase 2 — After PNA
 Comparative analysis of WF24 vs. WF29 CHA results.
 
-- Document and understand differences between WF24 and WF29 methodologies and projections
-- Conduct sensitivity analyses on all four investigation topics
-- Inform future Water Forward updates
+- Sensitivity analyses on all four investigation topics
+- Document differences to inform future Water Forward updates
 
 ---
 
@@ -176,18 +165,16 @@ Comparative analysis of WF24 vs. WF29 CHA results.
 | 08 | Post-Processing (quantile mapping, stochastic sequences) | Not Started |
 | 09 | WAM Input Generation (flo, eva, fad files) | Not Started |
 
-**Technical Advisory Group (TAG)**: The TAG will be formed in 2026 and will be engaged on WF29 CHA updates. TAG covers broader topics than climate alone. Meeting schedule to be determined.
+**TAG**: The Technical Advisory Group will be formed in 2026. Meeting schedule TBD.
 
 ---
 
 ## Spatial Framework
 
-The CHA uses a multi-scale spatial framework covering the Colorado River Basin.
-
-- **21 TWDB quadrangles** (1° x 1°) define the coarse grid (black boundaries)
-- **323 quarter-degree grid cells (QDGCs)** at 0.25° resolution provide the climate data framework (magenta grid)
-- **43 incremental watersheds** delineated from HUC12 boundaries define the hydrologic modeling units (colored regions)
-- Area-weight matrices link QDGCs to watersheds for spatial integration of climate data
+- **21 TWDB quadrangles** (1° x 1°) — coarse grid (black boundaries)
+- **323 quarter-degree grid cells (QDGCs)** at 0.25° — climate data framework (magenta grid)
+- **43 incremental watersheds** from HUC12 boundaries — hydrologic modeling units (colored regions)
+- Area-weight matrices link QDGCs to watersheds for spatial integration
 
 ![Colorado River Basin spatial grid showing quadrangles and QDGCs](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_crb_spatial_grid.png)
 
@@ -197,39 +184,37 @@ The CHA uses a multi-scale spatial framework covering the Colorado River Basin.
 
 ## ETo Model Evaluation: Sensitivity Comparison
 
-Four temperature-based ETo models were calibrated against gridMET reference ETo (1999-2018) and then evaluated for sensitivity when driven by GCM projections.
+Four temperature-based ETo models calibrated against gridMET (1999-2018), then evaluated for sensitivity under GCM projections.
 
-- **Blaney-Criddle** (~4.4%/C) and **Hamon** (~6%/C) show excessive sensitivity — approaching the Clausius-Clapeyron theoretical ceiling of ~7%/C
-- **Hargreaves-Samani** (~3%/C) and **Oudin** (~2.8%/C) cluster near the 3%/C physically defensible target
-- Oudin was selected for refinement due to its low sensitivity and reliance on robust inputs (extraterrestrial radiation and mean temperature only)
+- **Blaney-Criddle** (~4.4%/C) and **Hamon** (~6%/C): excessive — approaching the ~7%/C Clausius-Clapeyron ceiling
+- **Hargreaves-Samani** (~3%/C) and **Oudin** (~2.8%/C): near the 3%/C physically defensible target
+- Oudin selected for refinement — low sensitivity, robust inputs (extraterrestrial radiation + mean temperature)
 
-![ETo sensitivity boxplot comparing four models: Hargreaves-Samani, Oudin, Blaney-Criddle, and Hamon](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_eto_sensitivity_4models.png)
+![ETo sensitivity boxplot comparing four models](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_eto_sensitivity_4models.png)
 
 ---
 
 ## Oudin12b: Sensitivity Control Through the Projection Period
 
-The refined Oudin12b variant uses a constraint parameter (c) that actively limits ETo sensitivity as warming increases through 2100. This three-panel view shows the mechanism under SSP3-7.0:
+Oudin12b uses a constraint parameter (c) that actively limits ETo sensitivity as warming increases. Three-panel view under SSP3-7.0:
 
-- **Left — c parameter**: Grows increasingly negative over time, applying stronger correction as GCM temperatures diverge further from the historical calibration range
-- **Center — Mean ETo**: The constrained model (blue) rises moderately compared to the unconstrained version (orange), with the gap exceeding 1 mm/d by 2100
-- **Right — Sensitivity**: Without the constraint, sensitivity remains at ~8%/C (orange). With the constraint, sensitivity converges toward the 3% target (blue) and holds steady through 2100
+- **Left — c parameter**: Grows more negative over time as GCM temperatures diverge from the calibration range
+- **Center — Mean ETo**: Constrained (blue) rises moderately vs. unconstrained (orange); gap exceeds 1 mm/d by 2100
+- **Right — Sensitivity**: Constrained converges to 3% target and holds steady; unconstrained stays at ~8%/C
 
-This design ensures **projection stability** — plausible ETo estimates even under significant warming far outside the historical calibration range.
-
-![Three-panel time series showing Oudin12b sensitivity constraint behavior from 2015 to 2100 under SSP3-7.0](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_sensitivity_timeseries.png)
+![Oudin12b sensitivity constraint behavior from 2015 to 2100 under SSP3-7.0](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_sensitivity_timeseries.png)
 
 ---
 
 ## Oudin12b: Calibration Results
 
-### Reference Evapotranspiration (ETo)
-Calibrated against gridMET observations (1999-2018). The Oudin12b model accurately captures the seasonal cycle of ETo, with close agreement across all 12 months.
+### Reference ETo
+Calibrated against gridMET (1999-2018). Close agreement across all 12 months.
 
 ![Monthly mean daily ETo: Oudin12b vs. gridMET observations](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_monthly_eto.png)
 
 ### Lake Evaporation
-Applied to TWDB quadrangle-level lake evaporation data. Annual total bias is only -0.9% (modeled 1,322 mm vs. observed 1,334 mm), with March-October monthly totals agreeing within 1.1%.
+Calibrated against TWDB data. Annual bias: -0.9%. March-October monthly totals within 1.1%.
 
 ![Monthly lake evaporation: Oudin12b vs. TWDB observations](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_lake_evap.png)
 
@@ -238,16 +223,15 @@ Applied to TWDB quadrangle-level lake evaporation data. Annual total bias is onl
 ## Next Steps
 
 ### Immediate (2026)
-- Complete GR4J streamflow model calibration for all 45 control points (Task 04)
-- Generate streamflow projections using calibrated models with LOCA2 GCM data (Task 05)
-- Form the Technical Advisory Group (TAG) and begin engagement on CHA updates
+- Complete GR4J calibration for all 45 control points (Task 04)
+- Generate streamflow projections with LOCA2 GCM data (Task 05)
+- Form TAG and begin engagement on CHA updates
 
 ### Near-Term
-- Conduct climate scenario assessment and GCM selection (Task 07)
-- Post-process projections: quantile mapping onto historical WAM record, stochastic drought sequence generation (Task 08)
-- Deliver WAM input files (flo, eva, fad) for the Preliminary Needs Analysis (Task 09)
+- Climate scenario assessment and GCM selection (Task 07)
+- Post-processing: quantile mapping, stochastic drought sequences (Task 08)
+- Deliver WAM input files for PNA (Task 09)
 
 ### Phase 2
-- Comparative analysis of WF24 vs. WF29 CHA results
+- WF24 vs. WF29 comparative analysis
 - Sensitivity analyses on all four investigation topics
-- Technical documentation for future Water Forward updates
