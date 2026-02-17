@@ -97,57 +97,8 @@ Topics identified during WF24 for future investigation.
 ### C. Projection Stability Under Non-Stationary Conditions
 Models must produce plausible results when driven by climate inputs outside the historical calibration range. Two design decisions address this:
 
-- **Oudin12b ETo**: Sensitivity constrained to ~3%/C. **Complete.** (Details in later slides.)
-- **GR4J calibration**: Cross-regime screening tests parameter transferability. **In progress.** (Next two slides.)
-
----
-
-## The Extrapolation Challenge
-
-Calibrating on 20 years of history and projecting through 2100 is an **extrapolation problem**. Future conditions will exceed the calibration range.
-
-### Problem and Goal
-- Standard calibration optimizes historical fit — but parameters can fail under non-stationary regimes
-- Goal: explicitly test **transferability** across contrasting climate conditions (Klemes, 1986)
-- GR4J's 4-parameter structure makes this feasible — we can exhaustively sample and screen the full parameter space
-
-### Consistent Forcing Across Epochs
-- **Oudin PET** used for both calibration and projection — same physics in both periods
-- **LOCA2** inputs pre-corrected against Livneh — no "double correction"
-- **Streamflow target**: TCEQ WAM naturalized flows (1999-2018)
-
----
-
-## GR4J Calibration: Designing for Robustness
-
-Full-period calibration with cross-regime acceptance screening identifies parameter sets that transfer to unseen conditions.
-
-[Conceptual diagram: A horizontal workflow with 5 connected steps. Step 1: "Forcing Prep" — Oudin PET and LOCA2 quality assurance. Step 2: "Define Regimes" — Split 1999-2018 into dry, wet, warm, and cool year groups using terciles (2x2 grid). Step 3: "LHS Sampling" — 50,000 candidate parameter sets via Latin Hypercube Sampling. Step 4: "Cross-Regime Screening" — Each candidate must achieve KGE >= 0.50 (raw and log flows) and volume bias <= 15% in ALL four regimes AND the full period. Step 5: "Projection" — Surviving behavioral sets form an ensemble; each GCM projection paired with the parameter set that best preserves ensemble flow signatures.]
-
-### Key Design Principles
-- **Full-period calibration** (1999-2018) instead of arbitrary split-sample
-- **Multi-objective**: Low flows (KGE of log Q, weight 0.8) + high flows (KGE of raw Q, weight 0.2) + volume constraint
-- **Ensemble, not single best**: Retain all behavioral parameter sets that survive screening
-- **Representative Member, not median**: Selected via multi-signature matching (mean flow, extremes, variance) — timestep medians destroy flood peaks and drought durations
-- **Status**: Methodology complete. Calibration in progress for 45 control points.
-
----
-
-## Two-Phase Project Structure
-
-### Phase 1 — Current Focus
-Generate WAM-ready hydrology files (flo, eva, fad) for the WF29 **Preliminary Needs Analysis (PNA)**.
-
-- Complete streamflow calibration and projection (Tasks 04-05)
-- Climate scenario assessment and GCM selection (Task 07)
-- Post-processing: quantile mapping, stochastic drought sequences (Task 08)
-- Deliver WAM input files (Task 09)
-
-### Phase 2 — After PNA
-Comparative analysis of WF24 vs. WF29 CHA results.
-
-- Sensitivity analyses on all four investigation topics
-- Document differences to inform future Water Forward updates
+- **Oudin12b ETo**: Sensitivity constrained to ~3%/C. **Complete.**
+- **GR4J calibration**: Cross-regime screening tests parameter transferability. **In progress.**
 
 ---
 
@@ -220,6 +171,37 @@ Calibrated against TWDB data. Annual bias: -0.9%. March-October monthly totals w
 
 ---
 
+## The Extrapolation Challenge
+
+Calibrating on 20 years of history and projecting through 2100 is an **extrapolation problem**. Future conditions will exceed the calibration range.
+
+### Problem and Goal
+- Standard calibration optimizes historical fit — but parameters can fail under non-stationary regimes
+- Goal: explicitly test **transferability** across contrasting climate conditions (Klemes, 1986)
+- GR4J's 4-parameter structure makes this feasible — we can exhaustively sample and screen the full parameter space
+
+### Consistent Forcing Across Epochs
+- **Oudin PET** used for both calibration and projection — same physics in both periods
+- **LOCA2** inputs pre-corrected against Livneh — no "double correction"
+- **Streamflow target**: TCEQ WAM naturalized flows (1999-2018)
+
+---
+
+## GR4J Calibration: Designing for Robustness
+
+Full-period calibration with cross-regime acceptance screening identifies parameter sets that transfer to unseen conditions.
+
+[Conceptual diagram: A horizontal workflow with 5 connected steps. Step 1: "Forcing Prep" — Oudin PET and LOCA2 quality assurance. Step 2: "Define Regimes" — Split 1999-2018 into dry, wet, warm, and cool year groups using terciles (2x2 grid). Step 3: "LHS Sampling" — 50,000 candidate parameter sets via Latin Hypercube Sampling. Step 4: "Cross-Regime Screening" — Each candidate must achieve KGE >= 0.50 (raw and log flows) and volume bias <= 15% in ALL four regimes AND the full period. Step 5: "Projection" — Surviving behavioral sets form an ensemble; each GCM projection paired with the parameter set that best preserves ensemble flow signatures.]
+
+### Key Design Principles
+- **Full-period calibration** (1999-2018) instead of arbitrary split-sample
+- **Multi-objective**: Low flows (KGE of log Q, weight 0.8) + high flows (KGE of raw Q, weight 0.2) + volume constraint
+- **Ensemble, not single best**: Retain all behavioral parameter sets that survive screening
+- **Representative Member, not median**: Selected via multi-signature matching (mean flow, extremes, variance) — timestep medians destroy flood peaks and drought durations
+- **Status**: Methodology complete. Calibration in progress for 45 control points.
+
+---
+
 ## Next Steps
 
 ### Immediate (2026)
@@ -230,8 +212,8 @@ Calibrated against TWDB data. Annual bias: -0.9%. March-October monthly totals w
 ### Near-Term
 - Climate scenario assessment and GCM selection (Task 07)
 - Post-processing: quantile mapping, stochastic drought sequences (Task 08)
-- Deliver WAM input files for PNA (Task 09)
+- Deliver WAM input files for Preliminary Needs Analysis (Task 09)
 
-### Phase 2
+### Future
 - WF24 vs. WF29 comparative analysis
 - Sensitivity analyses on all four investigation topics
