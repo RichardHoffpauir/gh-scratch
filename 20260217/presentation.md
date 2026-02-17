@@ -161,18 +161,6 @@ The CHA uses a multi-scale spatial framework covering the Colorado River Basin.
 
 ---
 
-## Data Quality: PRISM vs. Livneh Comparison
-
-WF29 uses the Livneh dataset as the historical reference for temperature and precipitation because it is the training data for LOCA2. A thorough comparison with PRISM (the WF24 reference) confirmed high agreement across 317 QDGCs.
-
-- **Temperature** (tmax, tmin): Daily correlations r > 0.98 with minimal spatial variability
-- **Precipitation**: Daily correlation mean r = 0.78 (timing differences at the daily scale), but these cancel at monthly aggregation (r = 0.95)
-- **Conclusion**: The two datasets are functionally interchangeable at the monthly scale relevant to WAM inputs
-
-![Daily Pearson correlation between PRISM and Livneh across 317 QDGCs for precipitation, tmax, and tmin](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_prism_livneh_correlation.png)
-
----
-
 ## ETo Model Evaluation: Sensitivity Comparison
 
 Four temperature-based ETo models were calibrated against gridMET reference ETo (1999-2018) and then evaluated for sensitivity when driven by GCM projections.
@@ -185,17 +173,17 @@ Four temperature-based ETo models were calibrated against gridMET reference ETo 
 
 ---
 
-## Oudin12b: Controlling Sensitivity for Projection Stability
+## Oudin12b: Sensitivity Control Through the Projection Period
 
-The refined Oudin12b variant uses 13 calibrated parameters (12 monthly + 1 annual sensitivity constraint) to control ETo response under warming.
+The refined Oudin12b variant uses a constraint parameter (c) that actively limits ETo sensitivity as warming increases through 2100. This three-panel view shows the mechanism under SSP3-7.0:
 
-- **Oudin (2-param)**: Original formulation — low sensitivity (~2.8%/C) but limited seasonal flexibility
-- **Oudin12b (no limit)**: 12 monthly parameters improve seasonal fit but sensitivity jumps to ~7.5%/C (excessive)
-- **Oudin12b (with limit)**: Adding the annual sensitivity constraint brings sensitivity back to ~3%/C while retaining monthly calibration flexibility
+- **Left — c parameter**: Grows increasingly negative over time, applying stronger correction as GCM temperatures diverge further from the historical calibration range
+- **Center — Mean ETo**: The constrained model (blue) rises moderately compared to the unconstrained version (orange), with the gap exceeding 1 mm/d by 2100
+- **Right — Sensitivity**: Without the constraint, sensitivity remains at ~8%/C (orange). With the constraint, sensitivity converges toward the 3% target (blue) and holds steady through 2100
 
-This design decision directly addresses **projection stability** — ensuring plausible ETo estimates even under significant warming.
+This design ensures **projection stability** — plausible ETo estimates even under significant warming far outside the historical calibration range.
 
-![Oudin12b sensitivity before and after applying the annual constraint parameter](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_sensitivity_control.png)
+![Three-panel time series showing Oudin12b sensitivity constraint behavior from 2015 to 2100 under SSP3-7.0](https://raw.githubusercontent.com/RichardHoffpauir/gh-scratch/main/20260217/fig_oudin12b_sensitivity_timeseries.png)
 
 ---
 
