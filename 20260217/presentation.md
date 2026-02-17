@@ -99,13 +99,47 @@ These topics were identified during WF24 for future investigation. WF29 addresse
 ### B. Data-Driven vs. Process-Based Streamflow Modeling
 - WF24 used a neural network trained on historical weather-to-flow relationships
 - WF29 uses GR4J, a 4-parameter conceptual rainfall-runoff model with explicit water balance accounting
-- Process-based models have physical structure (soil moisture, routing, storage) that may extrapolate more reliably to conditions not seen during calibration
+- GR4J's parsimony (only 4 parameters) makes it amenable to exhaustive parameter sampling and robustness screening — an approach that is not feasible with high-dimensional statistical models
 
 ### C. Projection Stability Under Non-Stationary Conditions
 Both ETo and streamflow models must produce plausible results when driven by future climate inputs that exceed the historical calibration range. Two key design decisions address this:
 
-- **Oudin12b ETo model**: 13 calibrated parameters constrain temperature sensitivity to ~3% ETo increase per degree C of warming, avoiding excessive sensitivity seen in unconstrained models (4-6%/C). **Complete and ready for use.**
-- **GR4J cross-regime screening**: Parameter sets are tested across dry, wet, warm, and cool year regimes. Acceptance requires KGE >= 0.50 and volume bias <= 15% in all regimes, ensuring robustness across varied conditions. **Currently in progress.**
+- **Oudin12b ETo model**: Sensitivity constraint limits ETo response to ~3%/C of warming. **Complete and ready for use.** (Details in later slides.)
+- **GR4J calibration strategy**: Cross-regime screening explicitly tests parameter transferability across contrasting climate conditions. **Currently in progress.** (Details in the following two slides.)
+
+---
+
+## The Extrapolation Challenge
+
+Calibrating a model on 20 years of observed history and then driving it with GCM projections through 2100 is fundamentally an **extrapolation problem**. Future temperatures, precipitation patterns, and drought sequences will exceed the range of conditions used during calibration.
+
+### The Problem
+- Standard calibration optimizes fit within the historical range
+- Parameters that perform well historically can fail under warmer, non-stationary regimes
+
+### The Goal
+- Move beyond "good historical fit" to explicitly test for **transferability** across contrasting climate conditions (Klemes, 1986)
+- GR4J's 4-parameter structure makes this feasible: we can exhaustively sample the parameter space and screen every candidate against multiple climate regimes
+
+### Consistent Forcing Across Epochs
+- **Oudin PET** is used for both historical calibration and GCM projections — same physics in both periods
+- **LOCA2** inputs are pre-corrected against Livneh observations — no additional bias correction that would risk "double correction"
+- **Historical streamflow** target: TCEQ WAM naturalized flows (1999-2018)
+
+---
+
+## GR4J Calibration: Designing for Robustness
+
+The calibration strategy uses full-period calibration with cross-regime acceptance screening to identify parameter sets that transfer reliably to unseen conditions.
+
+[Conceptual diagram: A horizontal workflow with 5 steps shown as connected arrows or boxes. Step 1: "Forcing Prep" — Oudin PET and LOCA2 quality assurance. Step 2: "Define Regimes" — Split the 1999-2018 calibration period into dry, wet, warm, and cool year groups using terciles, forming a 2x2 grid. Step 3: "LHS Sampling" — Generate 50,000 candidate parameter sets via Latin Hypercube Sampling within physical bounds. Step 4: "Cross-Regime Screening" — Filter: each candidate must achieve KGE >= 0.50 for both raw and log flows, and volume bias <= 15%, in ALL four regimes AND the full period. Step 5: "Projection" — Surviving behavioral parameter sets form an ensemble; each GCM projection is paired with the parameter set that best preserves ensemble flow signatures for that specific future.]
+
+### Key Design Principles
+- **Full-period calibration** (1999-2018): Maximizes data availability instead of arbitrary chronological splitting
+- **Multi-objective function**: Low flows (KGE of log Q, weight 0.8) + high flows (KGE of raw Q, weight 0.2) + volume balance constraint
+- **Ensemble, not single best**: Equifinality is acknowledged — multiple parameter sets can yield similar performance. We retain the full ensemble of behavioral sets that survive screening.
+- **Representative Member, not median**: Timestep-wise medians destroy flood peaks and drought durations. A Representative Member is selected via multi-signature matching (mean flow, extremes, variance).
+- **Status**: Methodology complete. Calibration implementation in progress for all 45 control points.
 
 ---
 
